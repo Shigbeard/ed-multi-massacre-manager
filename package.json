@@ -1,0 +1,52 @@
+{
+	"name": "ed-multi-massacre-manager",
+	"description": "Managed Multiple Massacres Missions in Elite Dangerous Across Multiple Accounts",
+	"version": "1.0.0",
+	"license": "MIT",
+	"private": true,
+	"main": "desktop/index.js",
+	"scripts": {
+		"dev": "remix dev --command \"nodemon .\" --manual",
+		"build": "remix build && electron-builder",
+		"start": "electron ."
+	},
+	"author": {
+		"name": "Shigbeard",
+		"email": "4262327+Shigbeard@users.noreply.github.com"
+	},
+	"build": {
+		"files": [
+			"build",
+			"desktop",
+			"public",
+			"remix.config.js"
+		]
+	},
+	"dependencies": {
+		"@fortawesome/fontawesome-svg-core": "^6.7.2",
+		"@fortawesome/free-brands-svg-icons": "^6.7.2",
+		"@fortawesome/free-regular-svg-icons": "^6.7.2",
+		"@fortawesome/free-solid-svg-icons": "^6.7.2",
+		"@fortawesome/react-fontawesome": "^0.2.2",
+		"@remix-run/node": "^2.5.1",
+		"@remix-run/react": "^2.5.1",
+		"@tailwindcss/cli": "^4.0.3",
+		"isbot": "^4.4.0",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"remix": "^2.15.3",
+		"remix-electron": "^2.0.1"
+	},
+	"devDependencies": {
+		"@remix-run/dev": "^2.5.1",
+		"@remix-run/serve": "^2.5.1",
+		"@types/react": "^18.2.48",
+		"@types/react-dom": "^18.2.18",
+		"electron": "^28.2.1",
+		"electron-builder": "^24.9.1",
+		"electron-devtools-installer": "^3.2.0",
+		"nodemon": "^3.0.3",
+		"tailwindcss": "^3.4.17",
+		"typescript": "^5.3.3"
+	}
+}
