@@ -91,6 +91,15 @@ export function loader() {
 					}
 					missions.push(validdata)
 				}
+                if (data.event === "MissionCompleted") {
+                    const missionIndex = missions.findIndex(mission => mission.MissionID === data.MissionID)
+                    if (missionIndex !== -1) {
+                        missions[missionIndex].Completed = true
+                    } else {
+                        console.error("MissionCompleted event for unknown mission ID:", data.MissionID)
+                        replays.push(data)
+                    }
+                }
 			}
 		}
 	}
@@ -98,11 +107,18 @@ export function loader() {
 	for (const replay of replays) {
 		const missionIndex = missions.findIndex(mission => mission.MissionID === replay.MissionID)
 		if (missionIndex !== -1) {
-			missions[missionIndex].DestinationSystem = replay.NewDestinationSystem
-			missions[missionIndex].DestinationStation = replay.NewDestinationStation
-			missions[missionIndex].Completed = true
+            if (replay.event === "MissionCompleted") {
+                // remove mission from list
+                missions.splice(missionIndex, 1)
+                continue
+            }
+            if (replay.event === "MissionRedirected") {
+                missions[missionIndex].DestinationSystem = replay.NewDestinationSystem
+                missions[missionIndex].DestinationStation = replay.NewDestinationStation
+                missions[missionIndex].Completed = true
+            }
 		} else {
-			console.error("MissionRedirected event could not be replayed for unknown mission ID:", replay.MissionID)
+			console.error("Replayed event ", replay.event, "could not be replayed for unknown mission ID:", replay.MissionID)
 		}
 	}
 	const fileContents = files.map(file => {
