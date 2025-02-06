@@ -5,10 +5,13 @@ on:
         tags:
             - '*'
 
+          
 jobs:
     build:
         runs-on: windows-latest
         if: "!contains(github.event.head_commit.message, '[ci skip]')"
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
         steps:
         - uses: actions/checkout@v4

@@ -19,7 +19,9 @@ export interface MissionData {
     CMDR: string,
     Completed: boolean,
 }
-
+export function prettifyNumbers(num: number) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+}
 export interface MissionsProps {
     items: MissionData[];
 }
@@ -50,7 +52,7 @@ export const Missions: React.FC<MissionsProps> = ({ items }: MissionsProps) => {
                             <td className="px-6 py-4">{item.localisedName}</td>
                             <td className="px-6 py-4">{item.TargetFaction}</td>
                             <td className="px-6 py-4">{item.KillCount}</td>
-                            <td className="px-6 py-4">{item.Reward}</td>
+                            <td className="px-6 py-4">{prettifyNumbers(item.Reward)} CR</td>
                             <td className="px-6 py-4">{item.Expiry}</td>
                             <td className="px-6 py-4">{item.Completed ? 'Yes' : 'No'}</td>
                         </tr>

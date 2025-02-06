@@ -2,9 +2,12 @@ import { useLoaderData } from "@remix-run/react"
 import electron from "~/electron.server"
 import path from "path"
 import fs from "fs"
-import { MissionData, MissionsProps, Missions } from "~/components/missions"
+import { MissionData, MissionsProps, Missions, prettifyNumbers } from "~/components/missions"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
+interface ValuePerCMDR {
+    [key: string]: number
+}
 
 export function loader() {
 	if (!process.env.USERPROFILE) {
@@ -114,14 +117,22 @@ export function loader() {
 	for (const mission of missions) {
 		p += mission.KillCount
 	}
+    let rewards: ValuePerCMDR = {}
+    for (const mission of missions) {
+        if (!rewards[mission.CMDR]) {
+            rewards[mission.CMDR] = 0
+        }
+        rewards[mission.CMDR] += mission.Reward
+    }
+    
 	return {
 		missions: missions,
 		totalKills: p,
 		missionsCount: missions.length,
+        rewards: rewards,
 		missionsLeft: missions.filter(mission => mission.Completed === false).length,
 	}
 }
-
 export default function Index() {
 	const data = useLoaderData<typeof loader>()
 	return (
@@ -135,6 +146,14 @@ export default function Index() {
 			<p>Active missions: {data.missionsCount}</p>
 			<p>Missions left: {data.missionsLeft}</p>
 			<p>Total kills: {data.totalKills}</p>
+            <p>Values per CMDR:</p>
+            <ul>
+                {Object.entries(data.rewards).map(([key, value]) => (
+					<li key={key}>{key}: {prettifyNumbers(value as number)} CR</li>
+                ))}
+            </ul>
+            <p>Total Value</p>
+            <p>{prettifyNumbers(Object.values(data.rewards).reduce((a, b) => a + b, 0))} CR</p>
 			<h2>Missions:</h2>
 			<Missions items={data.missions} />
 		</main>
