@@ -41,7 +41,7 @@ jobs:
           with:
             files: |
               release/edmmm.zip
-            token: ${{ secrets.GITHUB_TOKEN }}
+            token: ${{ secrets.GH_TOKEN }}
             body: ${{ github.ref }}
             fail_on_unmatched_files: true
             generate_release_notes: true
